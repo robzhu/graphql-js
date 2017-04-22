@@ -10,6 +10,7 @@
 
 import {
   GraphQLEnumType,
+  GraphQLInt,
   GraphQLInterfaceType,
   GraphQLObjectType,
   GraphQLList,
@@ -292,11 +293,34 @@ const queryType = new GraphQLObjectType({
   })
 });
 
+const disturbanceType = new GraphQLObjectType({
+  name: 'Disturbance',
+  description: 'A disturbance in the force.',
+  fields: {
+    magnitude: { type: GraphQLInt }
+  }
+});
+
+const disturbanceSubscription = {
+  type: disturbanceType,
+  resolve: (rootValue) => {
+    return rootValue;
+  }
+};
+
+const subscriptionType = new GraphQLObjectType({
+  name: 'Subscription',
+  fields: {
+    disturbance: disturbanceSubscription,
+  }
+});
+
 /**
  * Finally, we construct our schema (whose starting query type is the query
  * type we defined above) and export it.
  */
 export const StarWarsSchema = new GraphQLSchema({
   query: queryType,
+  subscription: subscriptionType,
   types: [ humanType, droidType ]
 });

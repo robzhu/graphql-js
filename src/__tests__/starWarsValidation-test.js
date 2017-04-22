@@ -123,5 +123,16 @@ describe('Star Wars Validation Tests', () => {
       `;
       return expect(validationErrors(query)).to.be.empty;
     });
+
+    it('Validates the simplest subscription queries', () => {
+      const query = `
+        subscription DisturbancesInTheForce {
+          disturbance {
+            magnitude
+          }
+        }
+      `;
+      return expect(validationErrors(query)).to.be.empty;
+    });
   });
 });

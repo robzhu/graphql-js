@@ -50,6 +50,15 @@ describe('Star Wars Introspection Tests', () => {
               name: 'Droid'
             },
             {
+              name: 'Subscription'
+            },
+            {
+              name: 'Disturbance'
+            },
+            {
+              name: 'Int'
+            },
+            {
               name: '__Schema'
             },
             {
