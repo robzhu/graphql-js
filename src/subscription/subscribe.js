@@ -103,8 +103,8 @@ export async function subscribe(
 }
 
 export async function publish(
-  subscriptionDefinition: GraphQLFieldMap<*, *>,
+  name: string,
   payload: any
 ): Promise<void> {
-  pubsub.publish(subscriptionDefinition.name, payload);
+  pubsub.publish(name, payload);
 }

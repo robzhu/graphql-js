@@ -95,7 +95,7 @@ describe('Star Wars Subscription Tests', () => {
       );
 
       expect(callbackRan).to.be.false;
-      await publish(subscriptionDefinition, {});
+      await publish(subscriptionDefinition.name, {});
       expect(callbackRan).to.be.true;
     });
 
@@ -117,10 +117,10 @@ describe('Star Wars Subscription Tests', () => {
       );
 
       expect(callbackPayload).to.be.null;
-      await publish(subscriptionDefinition, {
+      await publish(subscriptionDefinition.name, {
         magnitude: 5,
       });
-      expect(callbackPayload).to.deep.equal({
+      expect(callbackPayload.data.disturbance).to.deep.equal({
         magnitude: 5,
       });
     });
@@ -158,7 +158,7 @@ describe('Star Wars Subscription Tests', () => {
       );
 
       expect(callbackPayload).to.be.null;
-      await publish(subscriptionDefinition, {
+      await publish(subscriptionDefinition.name, {
         magnitude: 10,
       });
 
@@ -187,7 +187,7 @@ describe('Star Wars Subscription Tests', () => {
 
       expect(callbackRan).to.be.false;
       await subscriptionToken.unsubscribe();
-      await publish(subscriptionDefinition, {});
+      await publish(subscriptionDefinition.name, {});
       expect(callbackRan).to.be.false;
     });
   });
