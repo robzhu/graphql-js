@@ -297,21 +297,29 @@ const disturbanceType = new GraphQLObjectType({
   name: 'Disturbance',
   description: 'A disturbance in the force.',
   fields: {
-    magnitude: { type: GraphQLInt }
+    magnitude: { type: GraphQLInt },
+    reason: { type: GraphQLString },
   }
 });
-
-const disturbanceSubscription = {
-  type: disturbanceType,
-  resolve: (rootValue) => {
-    return rootValue;
-  }
-};
 
 const subscriptionType = new GraphQLObjectType({
   name: 'Subscription',
   fields: {
-    disturbance: disturbanceSubscription,
+    disturbance: {
+      type: disturbanceType,
+      args: {
+        reason: {
+          description: 'reason why the disturbance occurred',
+          type: GraphQLString
+        }
+      },
+      resolve: (rootValue, {reason}) => {
+        if (reason) {
+          rootValue.reason = reason;
+        }
+        return rootValue;
+      }
+    },
   }
 });
 

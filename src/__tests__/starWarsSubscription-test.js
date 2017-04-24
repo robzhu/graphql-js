@@ -125,6 +125,51 @@ describe('Star Wars Subscription Tests', () => {
       });
     });
 
+    it('Publish delivers expected payload when subscribiption has variables', async () => {
+      const disturbanceSubscription = `
+        subscription DisturbancesInTheForce($reason: String) {
+          disturbance(reason: $reason) {
+            magnitude
+            reason
+          }
+        }
+      `;
+
+      const variables = {
+        reason: 'Alderaan destroyed'
+      };
+
+      let callbackPayload = null;
+      subscriptionToken = await subscribe(
+        {
+          schema: StarWarsSchema,
+          query: disturbanceSubscription,
+          variableValues: variables,
+          operationName: 'DisturbancesInTheForce',
+        },
+        payload => {
+          callbackPayload = payload;
+        }
+      );
+
+      const subscriptionDefinition = getSubscriptionDefinition(
+        StarWarsSchema,
+        disturbanceSubscription
+      );
+
+      expect(callbackPayload).to.be.null;
+      await publish(subscriptionDefinition, {
+        magnitude: 10,
+      });
+
+      expect(callbackPayload.data).to.deep.equal({
+        disturbance: {
+          magnitude: 10,
+          reason: 'Alderaan destroyed'
+        }
+      });
+    });
+
     it('Publishes after unsusbscribe do not trigger callback', async () => {
       let callbackRan = false;
       subscriptionToken = await subscribe({

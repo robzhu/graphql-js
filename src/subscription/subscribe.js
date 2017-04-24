@@ -81,15 +81,16 @@ export async function subscribe(
   );
 
   const onPublish = async (payload) => {
+    // note that payload is treated as the rootValue
     const result = await execute(
       params.schema,
       ast,
-      payload, // note we're passing payload in as the rootValue,
-      null, // contextValue,
-      null, // variableValues,
-      null, // operationName
+      payload,
+      params.contextValue,
+      params.variableValues,
+      params.operationName,
     );
-    callback(payload);
+    callback(result);
   };
 
   pubsub.subscribe(subscriptionDefinition.name, onPublish);
